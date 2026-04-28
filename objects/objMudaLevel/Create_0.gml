@@ -1,0 +1,1 @@
+colidiPlayer = false;

@@ -1,0 +1,5 @@
+//variáveis
+dialogo = noone;
+
+
+

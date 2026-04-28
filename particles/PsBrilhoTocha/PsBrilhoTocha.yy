@@ -1,0 +1,25 @@
+{
+  "$GMParticleSystem":"",
+  "%Name":"PsBrilhoTocha",
+  "backdropHeight":18,
+  "backdropImageOpacity":0.5,
+  "backdropImagePath":"C:\\Users\\lucax\\Downloads\\Materiais e créditos\\Materiais e créditos\\Assets\\Cenário\\Decoração\\Tocha.gif",
+  "backdropWidth":6,
+  "backdropXOffset":0.0,
+  "backdropYOffset":0.0,
+  "drawOrder":0,
+  "emitters":[
+    {"$GMPSEmitter":"","%Name":"tocha1","additiveBlend":false,"directionIncrease":0.0,"directionMax":100.0,"directionMin":80.0,"directionWiggle":0.0,"distribution":0,"editorColour":16777215,"editorDrawShape":true,"emitCount":-6,"emitDelayMax":0.0,"emitDelayMin":0.0,"emitDelayUnits":0,"emitIntervalMax":8.0,"emitIntervalMin":5.0,"emitIntervalUnits":1,"enabled":true,"endColour":2786662681,"GMPresetName":null,"gravityDirection":270.0,"gravityForce":0.0,"headPosition":0.0,"lifetimeMax":100.0,"lifetimeMin":60.0,"linkedEmitter":null,"locked":false,"midColour":4280842956,"mode":0,"name":"tocha1","orientationIncrease":0.0,"orientationMax":0.0,"orientationMin":0.0,"orientationRelative":false,"orientationWiggle":0.0,"regionH":4.564541,"regionW":4.4148216,"regionX":0.0,"regionY":-2.0,"resourceType":"GMPSEmitter","resourceVersion":"2.0","scaleX":0.03,"scaleY":0.03,"shape":0,"sizeIncrease":0.0,"sizeMax":1.0,"sizeMin":0.4,"sizeWiggle":0.0,"spawnOnDeathCount":1,"spawnOnDeathGMPreset":null,"spawnOnDeathId":null,"spawnOnUpdateCount":1,"spawnOnUpdateGMPreset":null,"spawnOnUpdateId":null,"speedIncrease":0.01,"speedMax":0.0,"speedMin":0.0,"speedWiggle":0.0,"spriteAnimate":false,"spriteId":null,"spriteRandom":false,"spriteStretch":true,"startColour":872360448,"texture":2,},
+  ],
+  "name":"PsBrilhoTocha",
+  "parent":{
+    "name":"Particulas",
+    "path":"folders/Efeitos/Particulas.yy",
+  },
+  "resourceType":"GMParticleSystem",
+  "resourceVersion":"2.0",
+  "showBackdrop":true,
+  "showBackdropImage":true,
+  "xorigin":0,
+  "yorigin":0,
+}

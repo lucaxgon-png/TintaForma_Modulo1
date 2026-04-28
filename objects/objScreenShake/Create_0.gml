@@ -1,0 +1,2 @@
+//shake
+shake = 0;

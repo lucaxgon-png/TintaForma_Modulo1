@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ScriptGeral",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ScriptGeral",
+  "parent":{
+    "name":"controladores",
+    "path":"folders/controladores.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

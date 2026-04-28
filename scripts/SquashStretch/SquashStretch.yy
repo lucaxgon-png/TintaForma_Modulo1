@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"SquashStretch",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"SquashStretch",
+  "parent":{
+    "name":"Efeitos",
+    "path":"folders/Efeitos.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
