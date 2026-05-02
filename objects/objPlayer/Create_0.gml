@@ -12,6 +12,22 @@ iniciaEfeitoBrilho(); //inicia efeito brilho
     maxVelV     = 5;
     grav        = 0.3;
     dir         = 1;
+    velhRun     = 2;
+    velhWalk    = 1;    
+
+    qtdPulos    = 2;
+    pulosAtual  = qtdPulos;
+
+//variáveis do corner correction
+cornerPixels = 8;
+
+//variáveis do coyote jump
+coyoteTimer = game_get_speed(gamespeed_fps) * 0.1;
+coyoteTimerAtual = coyoteTimer;
+
+//variáveis do buffer do pulo
+bufferTimer         = game_get_speed(gamespeed_fps) * 0.1;
+bufferTimerAtual    = 0;
 
 //lista de sprites por estado
 listaSprites = [sprPlayerParando, sprPlayerIdle];
@@ -29,7 +45,9 @@ indiceSprite = 0;
     right   = false;
     left    = false;
     jump    = false;
+    jumpR   = false;
     paint  = false;
+    run = false;
     
 //variáveis dos estados
     estado = noone;    
@@ -47,9 +65,59 @@ indiceSprite = 0;
                 left = keyboard_check(vk_left) or keyboard_check(ord("A"));
                 right = keyboard_check(vk_right) or keyboard_check(ord("D"));
                 jump = keyboard_check_pressed(vk_space);
+                jumpR = keyboard_check_released(vk_space);
                 paint = keyboard_check_pressed(vk_shift);
+                run = keyboard_check(ord("L"));
                 
             } 
+
+    //correr
+        correr = function ()
+        {
+            if (run)
+            {
+                maxVelh = velhRun;
+            } else 
+            { 
+                maxVelh = velhWalk;
+            }
+        }    
+    
+    //coyote
+        coyoteJump = function ()
+        {
+            grounCheck();
+            
+            //não estou tocando no chão
+            if (!ground)
+            {
+                coyoteTimerAtual--;
+            } else //se estou tocando no chão, reseta o timer
+            {
+            	coyoteTimerAtual = coyoteTimer;
+            }
+        }
+
+    //buffer
+        buffer = function ()
+        {
+            //checando chão
+            grounCheck();
+            
+            //inputs
+            inputs();
+            
+            if (!ground)
+            {
+                if (jump)
+                {
+                    bufferTimerAtual = bufferTimer;
+                }
+                
+                //diminuindo o valor
+                bufferTimerAtual--;
+            } 
+        }
 
     //movimento
         movimento = function()
@@ -89,10 +157,13 @@ indiceSprite = 0;
                         //arredondando posição Y
                         y = round(y);
                         
-                        //pulo
-                        if (jump)
+                        //se eu apertei espaço ou eu tenho buffer, eu pulo
+                        if (jump or bufferTimerAtual)
                         {
                            velV = - maxVelV;  
+                            
+                            //resetando buffer
+                            bufferTimerAtual = 0;
                         }
                     }
                 
@@ -225,6 +296,14 @@ animacaoAcabou = function()
     //estados
         estadoParado = function()
             { 
+                //se eu não usar o buffer do pulo, eu zero o velv
+                if (bufferTimerAtual <= 0)
+                {
+                    velv = 0;
+                }
+                
+                velh = 0;
+                
                 //aplica velociade
                 movimento();
                 
@@ -245,8 +324,9 @@ animacaoAcabou = function()
                     }
                 }
                 
+                //se eu pulei, ou se eu tenho puloTiemrAtual
                 //mudando para o estado de pulo
-                if (jump)
+                if (jump or bufferTimerAtual)
                     {
                         trocaEstado(estadoPulo, [sprPlayerJumpInicia, sprPlayerPulo])
                         
@@ -290,6 +370,9 @@ animacaoAcabou = function()
                     
                     //particula
                     instance_create_depth( x, y, depth -1, objPuloParticulas)
+                    
+                    //mola efeito
+                    mola2(.4,1.8);
                 }
                 
                 if (!ground)
@@ -300,15 +383,84 @@ animacaoAcabou = function()
         
         estadoPulo = function()
             {
+                static _inicio_pulo = true;
+                
+                if (_inicio_pulo)
+                {
+                    //acabei de entrar nesse estado
+                   // eu vou diminuir a quantidade de pulo atual em 1
+                    pulosAtual--;
+                    
+                    //setando o inicio do pulo como false
+                    _inicio_pulo = false;
+                }
+                
                 //permitindo o movimento
                 movimento();
+                
+                //se eu aperto pra pular e tenho pulos disponiveis
+                if (jump && pulosAtual > 0)
+                {
+                    if (ground or coyoteTimerAtual > 0)
+                    {
+                        // pulo "do chão" (inclui coyote)
+                        velV = -maxVelV;
+                        pulosAtual--; // reseta como se estivesse no chão
+                        coyoteTimerAtual = 0;
+                    }
+                    else
+                    {
+                        // pulo no ar (double jump)
+                        velV = -maxVelV;
+                        pulosAtual--;
+                    }
+                }
                 
                 //se eu bater na parede subindo, eu zero a minha velV
                 var _layer = layer_tilemap_get_id("TlLevel");
                 var _colisoes = [objWall, _layer];
                 if (place_meeting(x,y + sign(velV), _colisoes))
                 {
-                    velV = 0;
+                    var _parar = true;
+                    //se eu estou pulando para cima
+                    //corner correction direita
+                    //só vou fazer isso se estou parado ou indo para a direita
+                    if (velh >= 0)
+                    {
+                    //checando por todos os pixels da minha borda
+                    for (var i = 0; i < cornerPixels; i++)
+                    {
+                        //checando se eu NÃO estou colidindo em algum pixel do meu limite
+                        var _livre = !place_meeting(x + i, y + velV, _colisoes);
+                        //ele achou espaço livre dentro do limite
+                        if (_livre)
+                        {
+                                _parar = false;
+                                x += i;
+                                // fiz o ajuste de posição eu paro de repetir o cod
+                                break;
+                        };
+                    }
+                    }
+                        
+                    //corner correction para a esquerda
+                        for (var i = 0; i < cornerPixels; i++)
+                        {
+                            var _livre = !place_meeting(x - i, y + velv, _colisoes)
+                            
+                            //se tem espaço libre, eu movo o player
+                            if (_livre)
+                            {
+                                _parar = false;
+                                x -= i;
+                                
+                                break;
+                            }
+                        }
+                    }
+                }
+                    
+                    if (_parar) velV = 0;
                 }
                 
                 //se eu estou subindo
@@ -320,6 +472,13 @@ animacaoAcabou = function()
                     {
                         var _ind = array_get_index(colisoes, objWallOneWay);
                         array_delete(colisoes, _ind, 1)
+                    }
+                    
+                    //se eu solto o botão de pulo, eu paro de subir
+                    if (jumpR)
+                    {
+                        //corto pela metade o valor velV dele
+                        velV *= 0.5;
                     }
                 } 
                  else if (velV > 0) //se eu estou descendo
@@ -336,10 +495,17 @@ animacaoAcabou = function()
                         }
                     }
                 }
-                    
-                //voltando para parado 
+
+                //voltando para o estado parado 
                 if (ground)
                 {
+                    //avisando que o inicio do pulo vai ser true de novo
+                    _inicio_pulo = true;
+                    
+                    //resetando vari[avel de pulos
+                    pulosAtual = qtdPulos;
+                    
+                    //troca estado
                     trocaEstado(estadoParado, [sprPlayerPousando, sprPlayerIdle]);
                     
                     //acabei de pousar

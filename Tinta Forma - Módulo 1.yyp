@@ -296,8 +296,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"level2","path":"rooms/level2/level2.yy",},},
     {"roomId":{"name":"level1","path":"rooms/level1/level1.yy",},},
+    {"roomId":{"name":"level2","path":"rooms/level2/level2.yy",},},
     {"roomId":{"name":"level3","path":"rooms/level3/level3.yy",},},
   ],
   "templateType":"game",
