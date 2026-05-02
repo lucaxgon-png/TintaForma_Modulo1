@@ -13,6 +13,9 @@
 //power up
     pegaPowerUp();
 
+//correr 
+    correr();
+
 //sprite
     var _spd = sprite_get_speed(sprite_index) / game_get_speed(gamespeed_fps);
     spriteScale();
@@ -28,6 +31,12 @@
 
 //abre porta
     abrePorta();
+
+//usando coyote
+    coyoteJump();
+
+//buffer
+    buffer();
 
 //rodando o meu estado
     estado();

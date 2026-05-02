@@ -19,7 +19,11 @@ iniciaEfeitoBrilho(); //inicia efeito brilho
     pulosAtual  = qtdPulos;
 
 //variáveis do corner correction
+<<<<<<< Updated upstream
 cornerPixels = 8;
+=======
+cornerPixels = 20;
+>>>>>>> Stashed changes
 
 //variáveis do coyote jump
 coyoteTimer = game_get_speed(gamespeed_fps) * 0.1;
@@ -421,6 +425,7 @@ animacaoAcabou = function()
                 var _colisoes = [objWall, _layer];
                 if (place_meeting(x,y + sign(velV), _colisoes))
                 {
+<<<<<<< Updated upstream
                     var _parar = true;
                     //se eu estou pulando para cima
                     //corner correction direita
@@ -461,6 +466,32 @@ animacaoAcabou = function()
                 }
                     
                     if (_parar) velV = 0;
+=======
+                    //se eu estou pulando para cima
+                    //corner correction
+                    if (velv < 0 )
+                    {
+                        //só vou fazer isso se estou parado ou indo para a direita
+                        if (velh >= 0)
+                        {
+                           //checando por todos os pixels da minha borda
+                           for (var i = 0; i < cornerPixels; i++)
+                           {
+                               //checando se eu NÃO estou colidindo em algum pixel do meu limite
+                               var _livre = !place_meeting(x + i, y + velV, _colisoes);
+                               //ele achou espaço livre dentro do limite
+                               if (_livre)
+                               {
+                                    x += i;
+                                    // fiz o ajuste de posição eu paro de repetir o cod
+                                    break;
+                               };
+                           }
+                        }
+                    }
+                    
+                    velV = 0;
+>>>>>>> Stashed changes
                 }
                 
                 //se eu estou subindo
