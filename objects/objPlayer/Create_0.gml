@@ -19,11 +19,8 @@ iniciaEfeitoBrilho(); //inicia efeito brilho
     pulosAtual  = qtdPulos;
 
 //variáveis do corner correction
-<<<<<<< Updated upstream
 cornerPixels = 8;
-=======
 cornerPixels = 20;
->>>>>>> Stashed changes
 
 //variáveis do coyote jump
 coyoteTimer = game_get_speed(gamespeed_fps) * 0.1;
@@ -386,166 +383,147 @@ animacaoAcabou = function()
             }
         
         estadoPulo = function()
-            {
-                static _inicio_pulo = true;
-                
-                if (_inicio_pulo)
-                {
-                    //acabei de entrar nesse estado
-                   // eu vou diminuir a quantidade de pulo atual em 1
-                    pulosAtual--;
-                    
-                    //setando o inicio do pulo como false
-                    _inicio_pulo = false;
-                }
-                
-                //permitindo o movimento
-                movimento();
-                
-                //se eu aperto pra pular e tenho pulos disponiveis
-                if (jump && pulosAtual > 0)
-                {
-                    if (ground or coyoteTimerAtual > 0)
-                    {
-                        // pulo "do chão" (inclui coyote)
-                        velV = -maxVelV;
-                        pulosAtual--; // reseta como se estivesse no chão
-                        coyoteTimerAtual = 0;
-                    }
-                    else
-                    {
-                        // pulo no ar (double jump)
-                        velV = -maxVelV;
-                        pulosAtual--;
-                    }
-                }
-                
-                //se eu bater na parede subindo, eu zero a minha velV
-                var _layer = layer_tilemap_get_id("TlLevel");
-                var _colisoes = [objWall, _layer];
-                if (place_meeting(x,y + sign(velV), _colisoes))
-                {
-<<<<<<< Updated upstream
-                    var _parar = true;
-                    //se eu estou pulando para cima
-                    //corner correction direita
-                    //só vou fazer isso se estou parado ou indo para a direita
-                    if (velh >= 0)
-                    {
-                    //checando por todos os pixels da minha borda
-                    for (var i = 0; i < cornerPixels; i++)
-                    {
-                        //checando se eu NÃO estou colidindo em algum pixel do meu limite
-                        var _livre = !place_meeting(x + i, y + velV, _colisoes);
-                        //ele achou espaço livre dentro do limite
-                        if (_livre)
-                        {
-                                _parar = false;
-                                x += i;
-                                // fiz o ajuste de posição eu paro de repetir o cod
-                                break;
-                        };
-                    }
-                    }
-                        
-                    //corner correction para a esquerda
-                        for (var i = 0; i < cornerPixels; i++)
-                        {
-                            var _livre = !place_meeting(x - i, y + velv, _colisoes)
-                            
-                            //se tem espaço libre, eu movo o player
-                            if (_livre)
-                            {
-                                _parar = false;
-                                x -= i;
-                                
-                                break;
-                            }
-                        }
-                    }
-                }
-                    
-                    if (_parar) velV = 0;
-=======
-                    //se eu estou pulando para cima
-                    //corner correction
-                    if (velv < 0 )
-                    {
-                        //só vou fazer isso se estou parado ou indo para a direita
-                        if (velh >= 0)
-                        {
-                           //checando por todos os pixels da minha borda
-                           for (var i = 0; i < cornerPixels; i++)
-                           {
-                               //checando se eu NÃO estou colidindo em algum pixel do meu limite
-                               var _livre = !place_meeting(x + i, y + velV, _colisoes);
-                               //ele achou espaço livre dentro do limite
-                               if (_livre)
-                               {
-                                    x += i;
-                                    // fiz o ajuste de posição eu paro de repetir o cod
-                                    break;
-                               };
-                           }
-                        }
-                    }
-                    
-                    velV = 0;
->>>>>>> Stashed changes
-                }
-                
-                //se eu estou subindo
-                if (velV < 0 )
-                {
-                    transicaoSprites();
-                    
-                    if (array_contains(colisoes, objWallOneWay)) //parede one way
-                    {
-                        var _ind = array_get_index(colisoes, objWallOneWay);
-                        array_delete(colisoes, _ind, 1)
-                    }
-                    
-                    //se eu solto o botão de pulo, eu paro de subir
-                    if (jumpR)
-                    {
-                        //corto pela metade o valor velV dele
-                        velV *= 0.5;
-                    }
-                } 
-                 else if (velV > 0) //se eu estou descendo
-                {
-                    //trocando a lista de sprites
-                    listaSprites = [sprPlayerQuedaInicio, sprPlayerPuloBaixo]
-                    transicaoSprites();
-                    
-                    if(!place_meeting(x,y,objWallOneWay)) //parede one way
-                    {
-                        if(!array_contains(colisoes,objWallOneWay)) 
-                        {
-                            array_push(colisoes, objWallOneWay);
-                        }
-                    }
-                }
+{
+    static _inicio_pulo = true;
 
-                //voltando para o estado parado 
-                if (ground)
+    if (_inicio_pulo)
+    {
+        pulosAtual--;
+        _inicio_pulo = false;
+    }
+
+    movimento();
+
+    //PULO
+    if (jump && pulosAtual > 0)
+    {
+        velV = -maxVelV;
+
+        if (ground || coyoteTimerAtual > 0)
+        {
+            coyoteTimerAtual = 0;
+        }
+
+        pulosAtual--;
+    }
+
+    //COLISÃO / CORNER CORRECTION
+    var _layer = layer_tilemap_get_id("TlLevel");
+    var _colisoes = [objWall, _layer];
+
+    var _parar = false;
+
+    if (place_meeting(x, y + sign(velV), _colisoes))
+    {
+        _parar = true;
+
+        //apenas subindo
+        if (velV < 0)
+        {
+            //direita
+            if (velh >= 0)
+            {
+                for (var i = 1; i <= cornerPixels; i++)
                 {
-                    //avisando que o inicio do pulo vai ser true de novo
-                    _inicio_pulo = true;
-                    
-                    //resetando vari[avel de pulos
-                    pulosAtual = qtdPulos;
-                    
-                    //troca estado
-                    trocaEstado(estadoParado, [sprPlayerPousando, sprPlayerIdle]);
-                    
-                    //acabei de pousar
-                    instance_create_depth(x, y, depth -1 , objPousoParticulas);
-                    
-                    //efeito mola
-                    mola2(1.5,0.5);
+                    var _livre = !place_meeting(
+                        x + i,
+                        y + sign(velV),
+                        _colisoes
+                    );
+
+                    if (_livre)
+                    {
+                        x += i;
+                        _parar = false;
+                        break;
+                    }
                 }
             }
+
+            //esquerda
+            if (velh <= 0)
+            {
+                for (var i = 1; i <= cornerPixels; i++)
+                {
+                    var _livre = !place_meeting(
+                        x - i,
+                        y + sign(velV),
+                        _colisoes
+                    );
+
+                    if (_livre)
+                    {
+                        x -= i;
+                        _parar = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        //não conseguiu corrigir
+        if (_parar)
+        {
+            velV = 0;
+        }
+    }
+
+    //SUBINDO
+    if (velV < 0)
+    {
+        transicaoSprites();
+
+        if (array_contains(colisoes, objWallOneWay))
+        {
+            var _ind = array_get_index(colisoes, objWallOneWay);
+            array_delete(colisoes, _ind, 1);
+        }
+
+        if (jumpR)
+        {
+            velV *= 0.5;
+        }
+    }
+
+    //DESCENDO
+    else if (velV > 0)
+    {
+        listaSprites = [sprPlayerQuedaInicio, sprPlayerPuloBaixo];
+
+        transicaoSprites();
+
+        if (!place_meeting(x, y, objWallOneWay))
+        {
+            if (!array_contains(colisoes, objWallOneWay))
+            {
+                array_push(colisoes, objWallOneWay);
+            }
+        }
+    }
+
+    //POUSOU
+    if (ground)
+    {
+        _inicio_pulo = true;
+
+        pulosAtual = qtdPulos;
+
+        trocaEstado(
+            estadoParado,
+            [sprPlayerPousando, sprPlayerIdle]
+        );
+
+        instance_create_depth(
+            x,
+            y,
+            depth - 1,
+            objPousoParticulas
+        );
+
+        mola2(1.5, 0.5);
+    }
+}
+            
 
         estadoPowerUpInicio = function()
             {
