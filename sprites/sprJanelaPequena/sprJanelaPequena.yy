@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"cenário",
-    "path":"folders/sprites/cenário.yy",
+    "path":"folders/shaders/sprites/cenário.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

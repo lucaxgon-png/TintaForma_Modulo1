@@ -33,7 +33,7 @@
   "origin":7,
   "parent":{
     "name":"Correr",
-    "path":"folders/sprites/player/Correr.yy",
+    "path":"folders/shaders/sprites/player/Correr.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

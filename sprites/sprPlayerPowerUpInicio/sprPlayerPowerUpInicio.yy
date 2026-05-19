@@ -37,7 +37,7 @@
   "origin":9,
   "parent":{
     "name":"powerUP",
-    "path":"folders/sprites/player/powerUP.yy",
+    "path":"folders/shaders/sprites/player/powerUP.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

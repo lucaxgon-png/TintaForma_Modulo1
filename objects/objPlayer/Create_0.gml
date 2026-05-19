@@ -37,7 +37,10 @@ indiceSprite = 0;
 //variáveis de level
     ground = false;
     groundTinta = false;
-    
+
+    chaves = 0;
+    minhasChaves = [];    
+
     tilesetTinta = layer_tilemap_get_id("TLTinta");
     var _layer = layer_tilemap_get_id("TlLevel")
     colisoes = [objWall, _layer, objPorta]; //lista de objetos com colissão
@@ -222,8 +225,12 @@ indiceSprite = 0;
         {
             if (global.key > 0 && _porta.estado == "fechada")
             {
-                _porta.estado = "abrindo";
                 global.key-=1;
+                
+                //colocando a chave no modo abrir porta
+                minhasChaves[chaves].abrePorta = true;
+                //avisando para chave o novo alvo dela(porta)
+                minhasChaves[chaves].portaAlvo = _porta;
             }
         }
     }
@@ -319,7 +326,7 @@ animacaoAcabou = function()
                 
                 if (paint)
                 {
-                    if (global.powerUp == true && groundTinta)
+                    if (global.powerUpTinta == true && groundTinta)
                     {
                      estado = estadoEntrandoNaTinta;   
                     }

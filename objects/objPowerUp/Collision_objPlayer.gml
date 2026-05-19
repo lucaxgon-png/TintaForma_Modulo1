@@ -6,7 +6,7 @@ if(alvo == noone)
 {
     alvo = other.id;
     other.pegaPowerUp();
-    global.powerUp = true;
+    global.powerUpTinta = true;
     
     explosao();
 }

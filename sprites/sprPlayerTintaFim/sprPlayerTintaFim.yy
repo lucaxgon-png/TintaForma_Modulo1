@@ -29,7 +29,7 @@
   "origin":7,
   "parent":{
     "name":"tinta",
-    "path":"folders/sprites/player/tinta.yy",
+    "path":"folders/shaders/sprites/player/tinta.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

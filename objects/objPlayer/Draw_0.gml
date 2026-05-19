@@ -5,4 +5,4 @@ draw_text(x, y, string(bufferTimer))
 
 desenhaBrilho();
 
-//draw_text( x, y, string(global.key));
+//draw_text( x, y, string(minhasChaves));

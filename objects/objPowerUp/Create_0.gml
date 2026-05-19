@@ -1,3 +1,9 @@
+//se o poder já foi desbloqueado. não precisa mias
+if (global.powerUpTinta)
+{
+    instance_destroy();
+}
+
 alvo = noone;
 
 //animação

@@ -35,7 +35,7 @@
   "origin":7,
   "parent":{
     "name":"jump",
-    "path":"folders/sprites/player/jump.yy",
+    "path":"folders/shaders/sprites/player/jump.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
