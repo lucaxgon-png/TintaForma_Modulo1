@@ -1,15 +1,14 @@
 estado = noone;
-timer = timerValue;
 
 
 //contador estado
 contadorEstado = function (_estadoDestino)
     {
-        timer++;
+        timer--;
         
-        if (timer >= timerValue)
+        if (timer <= 0)
         {
-            timer = 0;
+            timer = timerValue;
             estado = _estadoDestino;
         }
     }

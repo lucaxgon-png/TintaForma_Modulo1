@@ -14,7 +14,7 @@
     pegaPowerUp();
 
 //correr 
-    correr();
+    if (global.powerUpRun) correr();
 
 //sprite
     var _spd = sprite_get_speed(sprite_index) / game_get_speed(gamespeed_fps);

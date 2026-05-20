@@ -10,7 +10,8 @@ global.debug = true;
 #macro FPS game_get_speed(gamespeed_fps) 
 
 //powerUp
-global.powerUpTinta = false;
+global.powerUpTinta = true;
+global.powerUpRun = false;
 
 //chave
 global.key = 0;
